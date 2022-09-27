@@ -1,0 +1,48 @@
+---
+title: "Week 3 Homework"
+author: "Nalin Kim"
+date: '2022-09-25'
+output: github_document
+---
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(nycflights13)
+theme_set(theme_bw())
+```
+
+#### 1. 
+How many flights have a missing dep_time? What other variables are missing? What might these rows represent?
+```{r}
+sum(is.na(flights$dep_time))
+map_dbl(flights, ~ sum(is.na(.x)))
+```
+There are 8255 flights with a missing `dep_time` variable, 8255 flights with a missing `dep_delay` variable, 8713 flights with a missing `arr_time` variable, 9430 with a missing `arr_delay` variable, and 9430 with a missing `air_time` variable. These missing variables represent that there are flights that failed to depart, failed to arrive, and canceled. On the other hand, it might be caused by possible data loss.
+
+#### 2. 
+Currently dep_time and sched_dep_time are convenient to look at, but hard to compute with because they’re not really continuous numbers. Convert them to a more convenient representation of number of minutes since midnight.
+```{r}
+flights %>%
+  mutate(dep_time = (dep_time %/% 100) * 60 + (dep_time %% 100),
+       sched_dep_time = (sched_dep_time %/% 100) * 60 + (sched_dep_time %% 100))
+```
+`%%` indicates x modulo y and `%/%` indicates integer division. The arithmetic operators mutate `dep_time` and `sched_dep_time` from actual times to number of minutes since midnight.
+
+#### 3. 
+Look at the number of canceled flights per day. Is there a pattern? Is the proportion of canceled flights related to the average delay? Use multiple dyplr operations, all on one line, concluding with ggplot(aes(x= ,y=)) + geom_point()
+```{r}
+flights %>%
+  group_by(year, month, day) %>%
+  summarise(canceled = mean(is.na(dep_delay)),
+            mean_dep_delay = mean(dep_delay, na.rm = T),
+            mean_arr_delay = mean(arr_delay, na.rm = T)) %>%
+  ggplot(aes(y = canceled)) +
+  geom_point(aes(x =  mean_dep_delay, color = "Mean Departure Delay"), alpha = 0.5) +
+  geom_smooth(aes(x =  mean_dep_delay, color = "Mean Departure Delay"), se = FALSE, method = "lm") + # regression line
+  geom_point(aes(x = mean_arr_delay, color = "Mean Arrival Delay"), alpha = 0.5) +
+  geom_smooth(aes(x = mean_arr_delay, color = "Mean Arrival Delay"), se = FALSE, method = "lm") + # regression line
+  labs(x = "Mean Delay per Day", y = "Canceled Flights per Day", col = "Delay per Day")
+```
+The linear regression line shows a weak positive relationship between canceled flights and the average delay. In other words, there is a higher proportion of canceled flights per day when there is more average delay in minutes. It does not show a strong relationship, yet a few notable points show a robust association between cancellation and delay.
