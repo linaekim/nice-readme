@@ -2,11 +2,10 @@
 title: "Week 3 Homework"
 author: "Nalin Kim"
 date: '2022-09-25'
-output: github_document
+output: html_document
 ---
 
-### Github Hyperlink
-https://github.com/linaekim/nice-readme.git
+#### [nice-readme](https://github.com/linaekim/nice-readme.git)
 
 ```{r}
 library(dplyr)
