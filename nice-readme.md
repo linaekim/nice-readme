@@ -136,8 +136,9 @@ flights %>%
     ## `geom_smooth()` using formula 'y ~ x'
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](nice-readme_files/figure-gfm/unnamed-chunk-4-1.png)<!-- --> The
-linear regression line shows a weak positive relationship between
+![](nice-readme_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+The linear regression line shows a weak positive relationship between
 canceled flights and the average delay. In other words, there is a
 higher proportion of canceled flights per day when there is more average
 delay in minutes. It does not show a strong relationship, yet a few

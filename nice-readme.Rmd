@@ -5,6 +5,9 @@ date: '2022-09-25'
 output: github_document
 ---
 
+### Github Hyperlink
+https://github.com/linaekim/nice-readme.git
+
 ```{r}
 library(dplyr)
 library(tidyverse)
@@ -45,4 +48,5 @@ flights %>%
   geom_smooth(aes(x = mean_arr_delay, color = "Mean Arrival Delay"), se = FALSE, method = "lm") + # regression line
   labs(x = "Mean Delay per Day", y = "Canceled Flights per Day", col = "Delay per Day")
 ```
+
 The linear regression line shows a weak positive relationship between canceled flights and the average delay. In other words, there is a higher proportion of canceled flights per day when there is more average delay in minutes. It does not show a strong relationship, yet a few notable points show a robust association between cancellation and delay.
